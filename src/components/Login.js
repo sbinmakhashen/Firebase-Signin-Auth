@@ -12,6 +12,8 @@ const Login = (props) => {
     passwordError,
     hasAccount,
     setHasAccount,
+    loading,
+    btnRef,
   } = props;
   return (
     <main className='container'>
@@ -41,8 +43,8 @@ const Login = (props) => {
           <div className='btn-container'>
             {hasAccount ? (
               <>
-                <button className='btn' onClick={handleSignin}>
-                  Sign In
+                <button className='btn' onClick={handleSignin} ref={btnRef}>
+                  {loading ? 'Signing in....' : 'Sign in'}
                 </button>
                 <p>
                   Don't have an account ?
@@ -56,8 +58,8 @@ const Login = (props) => {
               </>
             ) : (
               <>
-                <button className='btn' onClick={handleSignUp}>
-                  Sign Up
+                <button className='btn' onClick={handleSignUp} ref={btnRef}>
+                  {loading ? 'Creating...' : 'Sign Up'}
                 </button>
                 <p>
                   Already have an account ?

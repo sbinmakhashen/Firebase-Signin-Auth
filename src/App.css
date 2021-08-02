@@ -54,13 +54,26 @@ input {
   margin: 0.5rem 0;
   background-color: #e0e0e0;
   font-size: 1.7rem;
+  border-radius: 1rem;
 }
 
-.btn-container {
+header {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
 }
+
+.acc-info {
+  background-color: #365c3f;
+  padding: 0.5rem;
+  border-radius: 0.8rem;
+  line-height: 1.8;
+}
+
+.email {
+  text-align: left;
+}
+
 .btn {
   padding: 0.2rem 1.5rem;
   font-size: 2rem;
@@ -72,6 +85,9 @@ input {
   cursor: pointer;
 }
 
+.btn:disabled {
+  cursor: not-allowed;
+}
 .btn:active {
   transform: scale(0.95);
 }

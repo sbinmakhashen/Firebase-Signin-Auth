@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 import Login from './components/Login';
 import Home from './components/Home';
@@ -11,44 +11,57 @@ function App() {
   const [user, setUser] = useState('');
   const [hasAccount, setHasAccount] = useState(false);
   const [loading, setLoading] = useState(false);
+  const btnRef = useRef(null);
 
   // user authentication functions
   const handleSignin = (e) => {
     e.preventDefault();
-    clearErrors();
-    Fire.auth()
-      .signInWithEmailAndPassword(email, password)
-      .catch((err) => {
-        console.log(err);
-        switch (err.code) {
-          case 'auth/invalid-email':
-          case 'auth/user-disabled':
-          case 'auth/user-not-found':
-            setEmailError(err.message);
-            break;
-          case 'auth/wrong-password':
-            setPasswordError(err.message);
-            break;
-        }
-      });
+    setLoading(true);
+    btnRef.current.disabled = true;
+    setTimeout(() => {
+      setLoading(false);
+      btnRef.current.disabled = false;
+      clearErrors();
+      Fire.auth()
+        .signInWithEmailAndPassword(email, password)
+        .catch((err) => {
+          console.log(err);
+          switch (err.code) {
+            case 'auth/invalid-email':
+            case 'auth/user-disabled':
+            case 'auth/user-not-found':
+              setEmailError(err.message);
+              break;
+            case 'auth/wrong-password':
+              setPasswordError(err.message);
+              break;
+          }
+        });
+    }, 2000);
   };
 
   const handleSignUp = (e) => {
     e.preventDefault();
-    clearErrors();
-    Fire.auth()
-      .createUserWithEmailAndPassword(email, password)
-      .catch((err) => {
-        switch (err.code) {
-          case 'auth/email-already-in-use':
-          case 'auth/invalid-email':
-            setEmailError(err.message);
-            break;
-          case 'auth/weak-password':
-            setPasswordError(err.message);
-            break;
-        }
-      });
+    setLoading(true);
+    btnRef.current.disabled = true;
+    setTimeout(() => {
+      setLoading(false);
+      btnRef.current.disabled = false;
+      clearErrors();
+      Fire.auth()
+        .createUserWithEmailAndPassword(email, password)
+        .catch((err) => {
+          switch (err.code) {
+            case 'auth/email-already-in-use':
+            case 'auth/invalid-email':
+              setEmailError(err.message);
+              break;
+            case 'auth/weak-password':
+              setPasswordError(err.message);
+              break;
+          }
+        });
+    }, 2000);
   };
 
   const handleLogout = () => {
@@ -84,7 +97,6 @@ function App() {
     setEmailError('');
     setPasswordError('');
   };
-  console.log(user);
 
   return (
     <div className='App'>
@@ -100,6 +112,8 @@ function App() {
           passwordError={passwordError}
           hasAccount={hasAccount}
           setHasAccount={setHasAccount}
+          loading={loading}
+          btnRef={btnRef}
         />
       ) : (
         <Home handleLogout={handleLogout} loading={loading} />
