@@ -20,7 +20,7 @@ const Home = ({ handleLogout, loading }) => {
           Log out
         </button>
       </header>
-      <h1>
+      <h1 className='logoutM'>
         {!loading ? 'Logged in seccussfully!!!!! `:)`' : 'Logging out...'}
       </h1>
     </div>
